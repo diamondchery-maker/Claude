@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Slayed by Soup | Luxury Nails in Orlando, FL</title>
+  <meta name="description" content="Slayed by Soup: licensed nail specialist in Orlando, FL 32812. Luxury sets, crystals, and custom nail art. Open 7 days, 8AM–11PM. Book your slay." />
+  <meta name="theme-color" content="#07030a" />
+  <meta property="og:title" content="Slayed by Soup | Luxury Nails in Orlando" />
+  <meta property="og:description" content="Licensed nail specialist in Orlando, FL. Open 7 days. Book your slay." />
+  <meta property="og:image" content="assets/img/set-pink-crystal.jpg" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Great+Vibes&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <script>document.documentElement.classList.add('js');</script>
+  <script type="importmap">
+    { "imports": { "three": "./vendor/three.module.min.js" } }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Preloader -->
+  <div class="loader" aria-hidden="true">
+    <div class="loader__word">
+      <span class="loader__outline">SLAYED</span>
+      <span class="loader__fill">SLAYED</span>
+    </div>
+    <div class="loader__script">by Soup</div>
+    <div class="loader__count"><span>0</span>%</div>
+  </div>
+
+  <!-- 3D stage (decorative) -->
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- Cursor glow (fine pointers only) -->
+  <div class="cursor" aria-hidden="true"><span></span></div>
+
+  <!-- Scroll progress -->
+  <div class="progress" aria-hidden="true"><span></span></div>
+
+  <!-- Header -->
+  <header class="nav" data-nav>
+    <a class="nav__logo" href="#top" aria-label="Slayed by Soup, back to top">
+      <span class="nav__logo-big">SLAYED</span><span class="nav__logo-script">by Soup</span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#about">About</a>
+      <a href="#hours">Hours</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#policies">Policies</a>
+      <a href="#remember">Before You Book</a>
+    </nav>
+    <a class="btn btn--sm nav__cta" href="https://slayedbysoup.as.me/" target="_blank" rel="noopener">Book now</a>
+    <button class="nav__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+      <span></span><span></span>
+    </button>
+  </header>
+
+  <!-- Mobile / full-screen menu -->
+  <div class="menu" id="menu" hidden>
+    <nav aria-label="Menu">
+      <ol>
+        <li><a href="#about"><small>01</small>About</a></li>
+        <li><a href="#work"><small>02</small>The Work</a></li>
+        <li><a href="#hours"><small>03</small>Hours</a></li>
+        <li><a href="#reviews"><small>04</small>Reviews</a></li>
+        <li><a href="#policies"><small>05</small>Policies</a></li>
+        <li><a href="#remember"><small>06</small>Before You Book</a></li>
+      </ol>
+    </nav>
+    <a class="btn btn--lg" href="https://slayedbysoup.as.me/" target="_blank" rel="noopener">Book your slay</a>
+    <div class="menu__social">
+      <a href="https://instagram.com/slayedbysoup" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.tiktok.com/@sassysoupp" target="_blank" rel="noopener">TikTok</a>
+      <a href="https://www.pinterest.com/sassysoupp" target="_blank" rel="noopener">Pinterest</a>
+    </div>
+  </div>
+
+  <!-- Section dots (desktop) -->
+  <nav class="dots" aria-label="Sections">
+    <a href="#top" data-label="Home"></a>
+    <a href="#about" data-label="About"></a>
+    <a href="#work" data-label="The Work"></a>
+    <a href="#hours" data-label="Hours"></a>
+    <a href="#reviews" data-label="Reviews"></a>
+    <a href="#policies" data-label="Policies"></a>
+    <a href="#remember" data-label="Before You Book"></a>
+    <a href="#book" data-label="Book"></a>
+  </nav>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero" id="top" data-section>
+      <div class="hero__inner">
+        <p class="hero__kicker" data-hero-fade>
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          Orlando, FL 32812
+        </p>
+        <h1 class="hero__title" aria-label="Slayed by Soup">
+          <span class="hero__slayed" data-split aria-hidden="true">SLAYED</span>
+          <span class="hero__by" aria-hidden="true">by Soup</span>
+        </h1>
+        <p class="hero__sub" data-hero-fade>Luxury sets, crystals &amp; custom nail art by a licensed nail specialist. Come in plain, leave <em>slayed</em>.</p>
+        <div class="hero__ctas" data-hero-fade>
+          <a class="btn btn--lg" data-magnetic href="https://slayedbysoup.as.me/" target="_blank" rel="noopener">
+            Book your slay
+            <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn--ghost btn--lg" href="#policies">Read the policies</a>
+        </div>
+        <ul class="hero__badges" data-hero-fade>
+          <li>Licensed</li><li>7X Barbicide Certified</li><li>Open 7 days</li>
+        </ul>
+      </div>
+      <a class="hero__scroll" href="#about" aria-label="Scroll to About">
+        <span>Scroll</span><i></i>
+      </a>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__row" data-marquee="1">
+        <span>Licensed Nail Specialist</span><b></b><span>7X Barbicide Certified</span><b></b><span>American Safety Council Certified</span><b></b><span>Orlando, FL</span><b></b><span>Open 7 Days</span><b></b>
+      </div>
+      <div class="marquee__row marquee__row--alt" data-marquee="-1">
+        <span>Crystals</span><b></b><span>Coffin</span><b></b><span>Stiletto</span><b></b><span>French</span><b></b><span>3D Flowers</span><b></b><span>Foil Flakes</span><b></b><span>Full Glam</span><b></b>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <section class="about section" id="about" data-section>
+      <div class="about__grid">
+        <div class="about__portrait" data-reveal>
+          <div class="ring">
+            <span class="ring__photo"><img src="assets/img/soup.jpg" alt="Soup, the nail artist behind Slayed by Soup, smiling in her studio" width="336" height="336" /></span>
+          </div>
+          <span class="about__tag">Hey, it's Soup</span>
+        </div>
+        <div class="about__copy">
+          <p class="eyebrow" data-reveal>About</p>
+          <h2 class="duo" data-reveal>
+            <span class="duo__big">Hi gorgeous</span>
+            <span class="duo__script">welcome in</span>
+          </h2>
+          <p class="lead" data-reveal>I'm so thankful &amp; honored that my work has struck your interest. Every set is built to be a moment: sculpted, detailed, and made to turn heads.</p>
+          <p data-reveal>Please review the important information below before booking. Thank you!</p>
+          <ul class="creds">
+            <li data-reveal>
+              <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+              <div><strong>Licensed Nail Specialist</strong><span>Trained, tested &amp; licensed</span></div>
+            </li>
+            <li data-reveal>
+              <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="m8.5 14-1.5 7 5-3 5 3-1.5-7"/></svg>
+              <div><strong>Certified by American Safety Council</strong><span>Safety &amp; sanitation first</span></div>
+            </li>
+            <li data-reveal>
+              <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v5l-5 9a3 3 0 0 0 2.6 4.5h8.8A3 3 0 0 0 19 17l-5-9V3"/><path d="M7.5 14h9"/></svg>
+              <div><strong><span data-count="7">7</span>X Barbicide Certified</strong><span>Sanitation-certified seven times over</span></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORK -->
+    <section class="work section" id="work" data-section>
+      <div class="work__head">
+        <p class="eyebrow" data-reveal>The Work</p>
+        <h2 class="duo" data-reveal>
+          <span class="duo__big">Jewels</span>
+          <span class="duo__script">not tools</span>
+        </h2>
+      </div>
+      <div class="work__grid">
+        <figure class="tilt" data-tilt data-reveal>
+          <div class="tilt__inner">
+            <img src="assets/img/set-pink-crystal.jpg" alt="Long pink coffin and stiletto set with foil flakes, crystals, rhinestones and 3D flowers" width="657" height="727" loading="lazy" />
+            <span class="tilt__shine" aria-hidden="true"></span>
+          </div>
+          <figcaption>Pink crystal fantasy · coffin + stiletto mix</figcaption>
+        </figure>
+        <div class="work__side">
+          <p class="lead" data-reveal>Foil flakes, crystal clusters, 3D flowers, French pink: whatever your vision is, we build it to last.</p>
+          <div class="tagus neon" data-reveal>
+            <p class="tagus__title">Tag us to be featured</p>
+            <p>Post your set and tag us to be featured on our platforms!</p>
+            <ul class="socials">
+              <li><a href="https://instagram.com/slayedbysoup" target="_blank" rel="noopener">
+                <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+                @slayedbysoup</a></li>
+              <li><a href="https://www.tiktok.com/@sassysoupp" target="_blank" rel="noopener">
+                <svg class="i i--fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.53.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                @sassysoupp</a></li>
+              <li><a href="https://www.pinterest.com/sassysoupp" target="_blank" rel="noopener">
+                <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M10.5 21 12.3 13.4"/><path d="M9.6 14.6c-.8-.6-1.3-1.6-1.3-2.9a4.2 4.2 0 0 1 4.4-4.2c2.5 0 4 1.7 4 3.9 0 2.5-1.3 4.3-3.1 4.3-1.1 0-1.8-.9-1.6-2"/></svg>
+                @sassysoupp</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOURS -->
+    <section class="hours section" id="hours" data-section>
+      <div class="hours__head">
+        <svg class="clock" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="45"/>
+          <g class="clock__ticks"></g>
+          <line class="clock__h" x1="50" y1="50" x2="50" y2="28"/>
+          <line class="clock__m" x1="50" y1="50" x2="50" y2="14"/>
+          <circle cx="50" cy="50" r="2.5" fill="currentColor"/>
+        </svg>
+        <h2 class="duo" data-reveal>
+          <span class="duo__big">Business</span>
+          <span class="duo__script">Hours</span>
+        </h2>
+      </div>
+      <div class="hours__board neon" data-reveal>
+        <p class="status" data-status role="status"><i></i><span>Checking hours…</span></p>
+        <dl class="hours__list">
+          <div data-day="1"><dt>Monday</dt><dd>8AM – 11PM</dd></div>
+          <div data-day="2"><dt>Tuesday</dt><dd>8AM – 11PM</dd></div>
+          <div data-day="3"><dt>Wednesday</dt><dd>8AM – 11PM</dd></div>
+          <div data-day="4"><dt>Thursday</dt><dd>8AM – 11PM</dd></div>
+          <div data-day="5"><dt>Friday</dt><dd>8AM – 11PM</dd></div>
+          <div data-day="6"><dt>Saturday</dt><dd>8AM – 11PM</dd></div>
+          <div data-day="0"><dt>Sunday</dt><dd>8AM – 11PM</dd></div>
+        </dl>
+        <p class="hours__note">Appointments between 8PM – 8AM carry a $25–$50 after-hours fee. <a href="#policies">See policies</a></p>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section class="reviews section" id="reviews" data-section>
+      <div class="reviews__head">
+        <h2 class="duo" data-reveal>
+          <span class="duo__script duo__script--before">Real</span>
+          <span class="duo__big">Reviews</span>
+        </h2>
+        <svg class="lips" viewBox="0 0 120 60" aria-hidden="true">
+          <path d="M8 30c10-12 22-18 30-16 6 2 8 5 12 5s6-3 12-5c8-2 20 4 30 16-10 14-25 20-42 20S18 44 8 30Z"/>
+          <path d="M8 30c20 4 64 4 84 0"/>
+          <path d="M100 18l16-8M102 30h16M100 42l16 8"/>
+        </svg>
+      </div>
+      <div class="reviews__grid">
+        <blockquote class="review neon" data-reveal>
+          <svg class="review__q" viewBox="0 0 40 32" aria-hidden="true"><path d="M0 32V18C0 8 6 1 16 0l2 5c-6 2-9 6-9 11h7v16H0Zm22 0V18C22 8 28 1 38 0l2 5c-6 2-9 6-9 11h7v16H22Z"/></svg>
+          <p>I've gotten so many compliments on these nails. Thank you so much for seeing my vision: a lot of nail techs don't see my vision and you did that! I absolutely <mark>love</mark> them!!</p>
+          <footer>Tyler Campbell</footer>
+        </blockquote>
+        <blockquote class="review neon" data-reveal>
+          <svg class="review__q" viewBox="0 0 40 32" aria-hidden="true"><path d="M0 32V18C0 8 6 1 16 0l2 5c-6 2-9 6-9 11h7v16H0Zm22 0V18C22 8 28 1 38 0l2 5c-6 2-9 6-9 11h7v16H22Z"/></svg>
+          <p>You're the <mark>best</mark>. I fly all the way from Baltimore for her. Not only are the nails great but the service &amp; vibes are A1!</p>
+          <footer>Monique Davis <span>· flies in from Baltimore</span></footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- POLICIES (stacking cards) -->
+    <section class="policies section" id="policies" data-section>
+      <div class="policies__head">
+        <svg class="contract" viewBox="0 0 64 64" aria-hidden="true">
+          <path d="M14 4h26l12 12v44H14z"/><path d="M40 4v12h12"/><path d="M21 22h22M21 30h22M21 38h14"/><path d="M20 52c3-6 5-6 6-2s3 2 5-1 4 0 6 1"/><path d="m44 54 14-20 3 2-14 20-4 1z"/>
+        </svg>
+        <h2 class="duo" data-reveal>
+          <span class="duo__big">Policies</span>
+          <span class="duo__script">made simple!</span>
+        </h2>
+        <p class="lead" data-reveal>Five things to know before you lock in. Scroll through.</p>
+      </div>
+
+      <div class="stack">
+        <article class="stack__card neon" style="--i:0">
+          <div class="stack__num">01</div>
+          <div class="stack__icon"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 9v.01M18 15v.01"/></svg></div>
+          <h3>Deposits</h3>
+          <p>A <strong>$30 deposit</strong> is required to secure an appointment. There is a <strong>$2 processing fee</strong> that is not applied toward your service.</p>
+          <p class="fine">All monetary items are non-refundable &amp; non-transferable.</p>
+        </article>
+        <article class="stack__card neon" style="--i:1">
+          <div class="stack__num">02</div>
+          <div class="stack__icon"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg></div>
+          <h3>Late Policy</h3>
+          <p><strong>10-minute grace period.</strong> A <strong>$1 per minute</strong> fee starts at 11 minutes late.</p>
+          <p class="fine">Appointments are subject to cancellation after 10 minutes.</p>
+        </article>
+        <article class="stack__card neon" style="--i:2">
+          <div class="stack__num">03</div>
+          <div class="stack__icon"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg></div>
+          <h3>After Hours</h3>
+          <p>Appointments starting, ending, or occurring between <strong>8PM – 8AM</strong> automatically incur a <strong>$25–$50 fee</strong>.</p>
+          <p class="fine">For accommodating the convenience of late/overnight services.</p>
+        </article>
+        <article class="stack__card neon" style="--i:3">
+          <div class="stack__num">04</div>
+          <div class="stack__icon"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M9 15h6m-2-2 2 2-2 2"/></svg></div>
+          <h3>Rescheduling</h3>
+          <p>You may reschedule <strong>48 hours in advance or more</strong> using your initial confirmation email.</p>
+        </article>
+        <article class="stack__card neon" style="--i:4">
+          <div class="stack__num">05</div>
+          <div class="stack__icon"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M10 13l4 4m0-4-4 4"/></svg></div>
+          <h3>Cancellation</h3>
+          <p>Cancelling removes your appointment from the books. <strong>Your deposit is forfeited</strong> and a fee of your remaining balance will be incurred. Leaving your appointment for any reason counts as a cancellation.</p>
+          <p class="fine"><strong>No direct written communication = cancellation.</strong> On the day of your appointment, reach out when you're on the way and when you arrive.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- THINGS TO REMEMBER (horizontal on desktop) -->
+    <section class="remember" id="remember" data-section>
+      <div class="remember__pin">
+        <div class="remember__head">
+          <h2 class="duo">
+            <span class="duo__script duo__script--before">Things to</span>
+            <span class="duo__big">Remember</span>
+          </h2>
+          <p class="remember__hint" aria-hidden="true">Keep scrolling <svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></p>
+        </div>
+        <div class="remember__track">
+          <article class="rcard neon">
+            <svg class="rcard__icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="4" y="12" width="40" height="24" rx="3"/><circle cx="24" cy="24" r="6"/><path d="M24 20v8M22 22h3a1 1 0 0 1 0 2h-2a1 1 0 0 0 0 2h3"/></svg>
+            <h3>Remaining Balances</h3>
+            <p>Due at the <strong>start</strong> of your appointment. Accepted via <strong>Tap to Pay, debit/credit card, Zelle &amp; cash only.</strong></p>
+            <p class="fine">Arriving unprepared will result in fees or cancellation.</p>
+          </article>
+          <article class="rcard neon">
+            <svg class="rcard__icon" viewBox="0 0 48 48" aria-hidden="true"><circle cx="14" cy="18" r="5"/><circle cx="24" cy="16" r="5"/><circle cx="34" cy="18" r="5"/><path d="M5 38c0-6 4-11 9-11s9 5 9 11M15 38c0-7 4-12 9-12s9 5 9 12M25 38c0-6 4-11 9-11s9 5 9 11"/></svg>
+            <h3>Extra Guests</h3>
+            <p>Extra guests are welcome <strong>if they have a confirmed appointment</strong> booked two weeks in advance, directly before or after your appointment time.</p>
+          </article>
+          <article class="rcard neon">
+            <svg class="rcard__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M14 8h20l8 10-18 22L6 18Z"/><path d="M6 18h36M18 8l6 32 6-32M14 8l4 10M34 8l-4 10"/></svg>
+            <h3>Jewels, Not Tools</h3>
+            <p>Your nails are built to last but they're still delicate creations. Not made for <strong>picking, fighting, flicking, or opening anything.</strong></p>
+            <p class="fine">Moisturize your hands, oil your cuticles &amp; wear gloves while doing chores!</p>
+          </article>
+          <article class="rcard neon">
+            <svg class="rcard__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M10 16c6-3 22-3 28 0v12c0 7-6 12-14 12s-14-5-14-12Z"/><path d="M10 20H6c0 6 2 9 5 10M38 20h4c0 6-2 9-5 10M16 22h16M16 28h16"/></svg>
+            <h3>Masks</h3>
+            <p><strong>You are required to bring a mask!</strong> I use low-odor products, however fumes &amp; dust are still present.</p>
+            <p class="fine">Please be considerate of my health &amp; yours, as well as clients looking forward to their appointments with me in good health.</p>
+          </article>
+          <article class="rcard rcard--hot neon">
+            <span class="rcard__now">Now!</span>
+            <svg class="rcard__icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="10" width="36" height="32" rx="3"/><path d="M14 6v8M34 6v8M6 20h36M17 31l5 5 10-10"/></svg>
+            <h3>Secure Your Slay</h3>
+            <p>Booking <strong>two weeks or more in advance</strong> is highly recommended! It guarantees your spot on the calendar, allows time for special requested products to come in, &amp; gives you more flexibility to reschedule if needed.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- BOOK -->
+    <section class="book section" id="book" data-section>
+      <div class="book__inner">
+        <p class="eyebrow" data-reveal>Ready?</p>
+        <h2 class="book__title" data-reveal>
+          <span>Secure</span>
+          <span>your <em>slay</em></span>
+        </h2>
+        <div class="checklist neon" data-reveal>
+          <p class="checklist__title">Quick pre-booking check</p>
+          <label><input type="checkbox" /> <span>I've read the policies</span></label>
+          <label><input type="checkbox" /> <span>I'll have my $30 deposit + balance ready</span></label>
+          <label><input type="checkbox" /> <span>I'm bringing a mask</span></label>
+          <p class="checklist__done" aria-live="polite"></p>
+        </div>
+        <a class="btn btn--xl" data-magnetic data-book href="https://slayedbysoup.as.me/" target="_blank" rel="noopener">
+          Book your appointment
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </a>
+        <p class="book__small">Booking opens on our secure scheduling page.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__big" aria-hidden="true">SLAYED</div>
+    <div class="footer__grid">
+      <div>
+        <p class="footer__logo"><span>SLAYED</span> <em>by Soup</em></p>
+        <p>Licensed Nail Specialist<br />Orlando, FL 32812</p>
+      </div>
+      <div>
+        <p class="footer__h">Hours</p>
+        <p>Every day<br />8AM – 11PM</p>
+      </div>
+      <div>
+        <p class="footer__h">Follow</p>
+        <ul class="footer__social">
+          <li><a href="https://instagram.com/slayedbysoup" target="_blank" rel="noopener">Instagram · @slayedbysoup</a></li>
+          <li><a href="https://www.tiktok.com/@sassysoupp" target="_blank" rel="noopener">TikTok · @sassysoupp</a></li>
+          <li><a href="https://www.pinterest.com/sassysoupp" target="_blank" rel="noopener">Pinterest · @sassysoupp</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer__h">Book</p>
+        <a class="btn btn--sm" href="https://slayedbysoup.as.me/" target="_blank" rel="noopener">Book now</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>© <span data-year>2026</span> Slayed by Soup</p>
+      <a href="#top" class="totop">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <!-- Mobile sticky booking bar -->
+  <div class="bookbar">
+    <a class="btn" href="https://slayedbysoup.as.me/" target="_blank" rel="noopener">Book your slay</a>
+  </div>
+
+  <script src="vendor/gsap.min.js" defer></script>
+  <script src="vendor/ScrollTrigger.min.js" defer></script>
+  <script src="vendor/lenis.min.js" defer></script>
+  <script src="js/main.js" defer></script>
+  <script type="module" src="js/scene.js"></script>
+</body>
+</html>

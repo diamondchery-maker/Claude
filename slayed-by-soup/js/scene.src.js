@@ -23,7 +23,7 @@ function start() {
   renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1.5 : 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
+  renderer.toneMappingExposure = .92;
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color('#07030a');
@@ -55,13 +55,13 @@ function start() {
 
   const pmrem = new THREE.PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(new RoomEnvironment(), .04).texture;
-  scene.environmentIntensity = 0.9;
+  scene.environmentIntensity = .65;
 
   const keyPink = new THREE.PointLight(0xff3fb4, 60, 30, 2);
   keyPink.position.set(-4, 2.5, 5);
   const rimPink = new THREE.PointLight(0xff8ad0, 40, 30, 2);
   rimPink.position.set(5, -2, 3);
-  const sun = new THREE.DirectionalLight(0xffffff, 1.4);
+  const sun = new THREE.DirectionalLight(0xffffff, .9);
   sun.position.set(3, 5, 6);
   scene.add(keyPink, rimPink, sun);
 
@@ -207,7 +207,7 @@ function start() {
       g.fillRect(Math.random() * w, Math.random() * h, s, s);
     }
   });
-  const starU = { uFill: { value: 0 }, uNude: { value: new THREE.Color('#e3ab9c') }, uEdge: { value: new THREE.Color('#ff3fb4') } };
+  const starU = { uFill: { value: 0 }, uNude: { value: new THREE.Color('#c98b7c') }, uEdge: { value: new THREE.Color('#ff3fb4') } };
   const starMat = physical({ map: starTex, roughness: .45, metalness: 0, clearcoat: .3, iridescence: 0, iridescenceIOR: 1.7, iridescenceThicknessRange: [250, 900] });
   starMat.onBeforeCompile = (sh) => {
     Object.assign(sh.uniforms, starU);
@@ -323,7 +323,7 @@ function start() {
   /* ---------- neon bloom ---------- */
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), .55, .45, .88);
+  const bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), .5, .45, .97);
   composer.addPass(bloom);
   composer.addPass(new OutputPass());
 

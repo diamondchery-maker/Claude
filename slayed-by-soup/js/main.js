@@ -119,6 +119,7 @@
   const nav = $('[data-nav]');
   const bookbar = $('.bookbar');
   const bookSection = $('#book');
+  const buildSection = $('#build');
   let lastY = window.scrollY;
   function onScroll() {
     const y = window.scrollY;
@@ -131,10 +132,57 @@
     lastY = y;
     const br = bookSection.getBoundingClientRect();
     const inBook = br.top < innerHeight * .85 && br.bottom > 0;
-    bookbar.classList.toggle('is-visible', y > innerHeight * .7 && !inBook);
+    const bu = buildSection.getBoundingClientRect();
+    const inBuild = bu.top < innerHeight * .5 && bu.bottom > innerHeight * .5;
+    bookbar.classList.toggle('is-visible', y > innerHeight * .7 && !inBook && !inBuild);
   }
   addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+  /* ---------- glitter trail (finger or cursor) ---------- */
+  const trail = $('#trail');
+  if (trail && !reduce) {
+    const ctx = trail.getContext('2d');
+    const dpr = Math.min(devicePixelRatio, 2);
+    const parts = [];
+    let raf = 0, lx = null, ly = null;
+    const size = () => { trail.width = innerWidth * dpr; trail.height = innerHeight * dpr; };
+    size(); addEventListener('resize', size);
+    const colors = ['#ffffff', '#ffb8e0', '#ff4fb8', '#ff8ad0'];
+    function spawn(x, y) {
+      const d = lx === null ? 0 : Math.hypot(x - lx, y - ly);
+      const n = Math.min(4, 1 + (d / 14) | 0);
+      for (let i = 0; i < n; i++) {
+        parts.push({ x: x + (Math.random() - .5) * 10, y: y + (Math.random() - .5) * 10, vx: (Math.random() - .5) * .8, vy: Math.random() * .6 + .2,
+          r: 2 + Math.random() * 5, life: 1, c: colors[(Math.random() * colors.length) | 0], rot: Math.random() * Math.PI });
+      }
+      lx = x; ly = y;
+      if (parts.length > 220) parts.splice(0, parts.length - 220);
+      if (!raf) raf = requestAnimationFrame(draw);
+    }
+    function star(x, y, r, rot) {
+      ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.beginPath();
+      for (let k = 0; k < 8; k++) { const rr = k % 2 ? r * .28 : r; const a = k * Math.PI / 4; ctx.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); }
+      ctx.closePath(); ctx.fill(); ctx.restore();
+    }
+    function draw() {
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      ctx.globalCompositeOperation = 'lighter';
+      for (let i = parts.length - 1; i >= 0; i--) {
+        const p = parts[i];
+        p.life -= .022; p.x += p.vx; p.y += p.vy; p.vy += .03; p.rot += .05;
+        if (p.life <= 0) { parts.splice(i, 1); continue; }
+        ctx.globalAlpha = p.life; ctx.fillStyle = p.c; ctx.shadowColor = '#ff2aa6'; ctx.shadowBlur = 8;
+        star(p.x, p.y, p.r * p.life, p.rot);
+      }
+      raf = parts.length ? requestAnimationFrame(draw) : 0;
+      if (!raf) { lx = null; ctx.clearRect(0, 0, innerWidth, innerHeight); }
+    }
+    addEventListener('pointermove', (e) => { if (e.pointerType === 'mouse') spawn(e.clientX, e.clientY); }, { passive: true });
+    addEventListener('touchmove', (e) => { const t = e.touches[0]; if (t) spawn(t.clientX, t.clientY); }, { passive: true });
+    addEventListener('touchstart', (e) => { const t = e.touches[0]; if (t) { lx = null; spawn(t.clientX, t.clientY); } }, { passive: true });
+  }
 
   /* ---------- everything below needs GSAP ---------- */
   if (!window.gsap || !window.ScrollTrigger) {
@@ -234,6 +282,40 @@
     yPercent: -18, opacity: 0, ease: 'none',
     scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
   });
+
+  /* ---------- THE BUILD: pinned scroll story driving the 3D nail ---------- */
+  const build = $('#build');
+  if (build) {
+    build.classList.add('is-anim');
+    const steps = $$('.build__step', build);
+    const bars = $$('.build__meter li', build);
+    // step windows line up with the stages in scene.js (sculpt, color, shine, crystals, slayed)
+    const windows = [[.04, .28], [.3, .5], [.5, .68], [.68, .86], [.86, 1.01]];
+    const tl = gsap.timeline({
+      defaults: { ease: 'power2.out' },
+      scrollTrigger: {
+        trigger: build, start: 'top top', end: '+=450%', pin: true, scrub: .8, anticipatePin: 1,
+        onUpdate: (self) => {
+          window.__slayBuild = self.progress;
+          bars.forEach((b, i) => b.style.setProperty('--f', Math.min(1, Math.max(0, (self.progress - windows[i][0]) / (windows[i][1] - windows[i][0])))));
+        }
+      }
+    });
+    tl.set({}, {}, 1); // total length = 1 so positions below are progress fractions
+    steps.forEach((step, i) => {
+      const [a, b] = windows[i];
+      const last = i === steps.length - 1;
+      tl.fromTo(step, { autoAlpha: 0, y: 60, filter: 'blur(10px)' }, { autoAlpha: 1, y: 0, filter: 'blur(0px)', duration: .05 }, a);
+      if (!last) tl.to(step, { autoAlpha: 0, y: -60, filter: 'blur(10px)', duration: .04, ease: 'power2.in' }, b - .045);
+      else {
+        const letters = $('h2 span', step);
+        letters.innerHTML = [...letters.textContent].map((c) => `<span class="ch" style="display:inline-block">${c}</span>`).join('');
+        tl.from($$('.ch', letters), { yPercent: 120, rotateX: -90, opacity: 0, stagger: .008, duration: .06, ease: 'back.out(2)' }, a + .01);
+      }
+    });
+    tl.to('.build__hint', { autoAlpha: 0, duration: .05 }, .9);
+    window.addEventListener('slay:slayed', () => burst($('.build__step--final .btn')));
+  }
 
   /* ---------- reveals ---------- */
   $$('[data-reveal]').forEach((el) => {

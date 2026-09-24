@@ -553,3 +553,45 @@ p { margin: 0 0 1em; }
 /* canvas fades in once the scene is built */
 #scene { opacity: 0; transition: opacity 1.2s ease; }
 #scene.is-ready { opacity: 1; }
+
+/* ---------- THE BUILD (pinned scroll story) ---------- */
+.build { position: relative; z-index: 2; padding: 64px var(--gutter); max-width: var(--maxw); margin: 0 auto; }
+.build__steps { display: grid; gap: 28px; }
+.build__step { max-width: 30rem; padding: 24px; border-radius: 20px; background: rgba(10, 3, 9, .55); border: 1px solid var(--line); backdrop-filter: blur(6px); }
+.build__n { font-weight: 800; font-size: 13px; letter-spacing: .3em; color: var(--pink); }
+.build__step h2 { margin: 4px 0 10px; font-family: var(--f-display); font-weight: 400; text-transform: uppercase; line-height: .9; font-size: clamp(56px, 10vw, 130px); color: var(--pink-soft); text-shadow: var(--glow-text); }
+.build__step p { font-size: clamp(17px, 1.8vw, 20px); color: var(--pink-pale); margin: 0; }
+.build__step--final { background: none; border: 0; backdrop-filter: none; }
+.build.is-anim .build__step--final { width: auto; max-width: none; }
+.build__step--final h2 span { display: block; white-space: nowrap; font-size: clamp(90px, 17vw, 230px); color: var(--pink); text-shadow: 3px 3px 0 #b01e7a, 6px 6px 0 #6d0f4b, 0 0 60px rgba(255, 42, 166, .8); }
+.build__step--final h2 em { display: block; font-family: var(--f-script); font-style: normal; text-transform: none; color: #fff; font-size: clamp(48px, 7vw, 96px); margin: -.35em 0 24px 1.2em; text-shadow: 0 4px 24px #000; }
+.build__meter, .build__hint { display: none; }
+
+/* animated mode (JS + motion allowed): pinned full-screen stage */
+.build.is-anim { height: 100vh; height: 100svh; max-width: none; padding: 0; }
+.build.is-anim .build__steps { position: absolute; inset: 0; display: block; }
+.build.is-anim .build__step {
+  position: absolute; left: var(--gutter); top: 50%; transform: translateY(-50%); width: min(30rem, 42vw);
+  opacity: 0; visibility: hidden;
+}
+.build.is-anim .build__meter {
+  position: absolute; left: var(--gutter); bottom: 40px; display: flex; gap: 8px; list-style: none; margin: 0; padding: 0;
+}
+.build__meter li { width: 36px; height: 4px; border-radius: 4px; background: rgba(255, 184, 224, .2); overflow: hidden; position: relative; }
+.build__meter li::after { content: ""; position: absolute; inset: 0; background: var(--pink); box-shadow: var(--glow); transform: scaleX(var(--f, 0)); transform-origin: 0 50%; }
+.build.is-anim .build__hint {
+  display: block; position: absolute; right: var(--gutter); bottom: 34px; margin: 0;
+  font-size: 12px; font-weight: 800; letter-spacing: .3em; text-transform: uppercase; color: var(--muted);
+}
+@media (max-width: 767px) {
+  .build.is-anim .build__step { top: auto; bottom: 84px; transform: none; width: auto; right: var(--gutter); padding: 18px 20px; }
+  .build.is-anim .build__step h2 { font-size: 54px; }
+  .build.is-anim .build__step--final { bottom: 90px; text-align: center; }
+  .build.is-anim .build__step--final h2 span { font-size: 96px; }
+  .build.is-anim .build__step--final h2 em { margin: -.35em 0 16px; }
+  .build.is-anim .build__meter { left: 50%; transform: translateX(-50%); bottom: 40px; }
+  .build.is-anim .build__hint { display: none; }
+}
+
+/* glitter trail */
+#trail { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 80; pointer-events: none; }

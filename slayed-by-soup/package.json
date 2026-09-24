@@ -1,0 +1,11 @@
+{
+  "name": "slayed-by-soup",
+  "private": true,
+  "scripts": {
+    "build": "esbuild js/scene.src.js --bundle --format=iife --minify --target=es2019 --outfile=js/scene.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "three": "0.170.0"
+  }
+}

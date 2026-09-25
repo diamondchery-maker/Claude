@@ -1,0 +1,1071 @@
+<title>Studio Lune Tattoo</title>
+<meta name="description" content="Demo portfolio site for a fine line and dotwork tattoo artist.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    --ink: #0d0c10;
+    --ink-2: #16141b;
+    --ink-3: #1f1c26;
+    --line: #2c2935;
+    --bone: #eee8de;
+    --dim: #948ea0;
+    --violet: #a291ff;
+    --violet-deep: #5b45d6;
+    --paper: #e7e0d3;
+    --paper-ink: #16131c;
+
+    --display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+    --body: "Manrope", "Helvetica Neue", Arial, sans-serif;
+    --mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+    --gutter: clamp(16px, 4vw, 56px);
+    --ease: cubic-bezier(.19, 1, .22, 1);
+  }
+
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--bone);
+    font: 400 16px/1.6 var(--body);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--violet); color: var(--ink); }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--violet); outline-offset: 3px; border-radius: 2px; }
+
+  .wrap { padding-inline: var(--gutter); max-width: 1440px; margin-inline: auto; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  .label {
+    font: 500 11px/1.4 var(--mono);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+
+  /* ---------- ambient layers ---------- */
+  .grain {
+    position: fixed; inset: -50%;
+    pointer-events: none; z-index: 60;
+    opacity: .07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grain 1s steps(6) infinite;
+  }
+  @keyframes grain {
+    0% { transform: translate(0, 0); } 20% { transform: translate(-3%, 2%); }
+    40% { transform: translate(2%, -4%); } 60% { transform: translate(-4%, -2%); }
+    80% { transform: translate(3%, 3%); } 100% { transform: translate(0, 0); }
+  }
+
+  .progress {
+    position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 70;
+    background: var(--violet);
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+  }
+  @supports (animation-timeline: scroll()) {
+    .progress { animation: grow linear both; animation-timeline: scroll(root); }
+    @keyframes grow { to { transform: scaleX(1); } }
+  }
+
+  .cursor { display: none; }
+  @media (pointer: fine) {
+    .cursor {
+      display: block;
+      position: fixed; left: 0; top: 0; z-index: 80;
+      pointer-events: none;
+      mix-blend-mode: difference;
+    }
+    .cursor__ring {
+      position: absolute; left: -18px; top: -18px;
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid #fff;
+      display: grid; place-items: center;
+      transition: width .45s var(--ease), height .45s var(--ease), left .45s var(--ease), top .45s var(--ease), background .3s;
+    }
+    .cursor__ring span {
+      font: 500 10px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase;
+      color: #000; opacity: 0; transition: opacity .2s;
+    }
+    .cursor.is-view .cursor__ring { width: 88px; height: 88px; left: -44px; top: -44px; background: #fff; }
+    .cursor.is-view .cursor__ring span { opacity: 1; }
+    .cursor.is-link .cursor__ring { width: 56px; height: 56px; left: -28px; top: -28px; }
+  }
+
+  /* ---------- header ---------- */
+  .top {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    padding-top: env(safe-area-inset-top, 0px);
+    transition: background .4s, backdrop-filter .4s;
+  }
+  .top.is-scrolled { background: color-mix(in oklab, var(--ink) 72%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+  .top__inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 18px; }
+  .brand { font: italic 500 22px/1 var(--display); text-decoration: none; letter-spacing: -.01em; }
+  .brand small { font: 500 10px/1 var(--mono); letter-spacing: .18em; font-style: normal; color: var(--dim); margin-left: 8px; text-transform: uppercase; }
+  .nav { display: flex; gap: 28px; align-items: center; }
+  .nav a { font: 500 12px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; text-decoration: none; color: var(--dim); transition: color .2s; }
+  .nav a:hover { color: var(--bone); }
+  .status { display: inline-flex; align-items: center; gap: 8px; }
+  .status::before {
+    content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--violet);
+    box-shadow: 0 0 0 0 var(--violet); animation: pulse 2.2s infinite;
+  }
+  @keyframes pulse { 70% { box-shadow: 0 0 0 8px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+  @media (max-width: 760px) { .nav a:not(.nav__book) { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; isolation: isolate; overflow: hidden; }
+  .hero__gl {
+    position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%;
+    background: radial-gradient(60% 70% at 70% 30%, #2a2150 0%, transparent 60%), radial-gradient(50% 60% at 20% 80%, #1d1830 0%, transparent 70%), var(--ink);
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: auto 0 0 0; height: 40%; z-index: -1;
+    background: linear-gradient(to bottom, transparent, var(--ink));
+  }
+  .hero__inner { padding-block: clamp(120px, 18vh, 180px) clamp(56px, 9vh, 96px); display: grid; gap: 28px; }
+  .hero__name { margin: 0; }
+  .hero__name svg { display: block; width: 100%; max-width: 1180px; height: auto; overflow: visible; }
+  .hero__name text {
+    font-family: var(--display); font-style: italic; font-weight: 400;
+    fill: var(--bone); fill-opacity: 1;
+    stroke: var(--violet); stroke-width: 1.2;
+    stroke-dasharray: 1400; stroke-dashoffset: 0;
+  }
+  .hero__name.is-drawing text { animation: needle 2.6s var(--ease) .2s both, ink 1.4s ease 2.1s both; }
+  @keyframes needle { from { stroke-dashoffset: 1400; } to { stroke-dashoffset: 0; } }
+  @keyframes ink { from { fill-opacity: 0; } to { fill-opacity: 1; } }
+
+  .hero__row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px; }
+  .hero__lede { max-width: 30ch; font-size: clamp(18px, 1.7vw, 22px); line-height: 1.45; margin: 0; text-wrap: balance; }
+  .hero__lede em { font-family: var(--display); font-style: italic; color: var(--violet); }
+  .hero__ctas { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .hero__meta { display: flex; flex-wrap: wrap; gap: 10px 28px; }
+
+  .btn {
+    --bg: var(--bone); --fg: var(--ink);
+    position: relative; display: inline-flex; align-items: center; gap: 10px;
+    padding: 16px 26px; border-radius: 999px; border: 1px solid var(--bg);
+    background: var(--bg); color: var(--fg);
+    font: 600 14px/1 var(--body); text-decoration: none; cursor: pointer;
+    overflow: hidden; isolation: isolate;
+    transition: color .4s var(--ease);
+  }
+  .btn::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background: var(--violet); border-radius: inherit;
+    transform: translateY(101%); transition: transform .5s var(--ease);
+  }
+  .btn:hover::before { transform: translateY(0); }
+  .btn--ghost { --bg: transparent; --fg: var(--bone); border-color: var(--line); }
+  .btn--ghost:hover { color: var(--ink); }
+  .btn svg { width: 14px; height: 14px; }
+
+  /* ---------- marquee ---------- */
+  .marquee { border-block: 1px solid var(--line); overflow: hidden; padding-block: 22px; }
+  .marquee__track { display: flex; width: max-content; will-change: transform; }
+  .marquee__group { display: flex; align-items: center; gap: 40px; padding-right: 40px; }
+  .marquee__item { font: italic 400 clamp(34px, 5vw, 64px)/1 var(--display); white-space: nowrap; }
+  .marquee__item:nth-child(4n+3) { color: transparent; -webkit-text-stroke: 1px var(--bone); }
+  .marquee__star { width: 22px; height: 22px; color: var(--violet); flex: none; }
+
+  /* ---------- sections ---------- */
+  section { position: relative; }
+  .section { padding-block: clamp(80px, 14vh, 160px); }
+  .sec-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px; margin-bottom: clamp(36px, 6vh, 64px); }
+  .sec-title { margin: 8px 0 0; font: 400 clamp(40px, 6.4vw, 96px)/.95 var(--display); letter-spacing: -.02em; text-wrap: balance; }
+  .sec-title em { font-style: italic; color: var(--violet); }
+
+  /* manifesto */
+  .manifesto p[data-words] {
+    margin: 0; max-width: 22ch;
+    font: 400 clamp(30px, 4.6vw, 68px)/1.12 var(--display);
+    letter-spacing: -.015em;
+  }
+  .manifesto .w { opacity: .22; transition: opacity .2s; }
+  .manifesto .w.is-lit, .no-motion .manifesto .w { opacity: 1; }
+  .manifesto em { font-style: italic; color: var(--violet); }
+  .manifesto__sign { display: flex; gap: 16px; align-items: center; margin-top: 40px; }
+  .manifesto__sign span:first-child { width: 48px; height: 1px; background: var(--dim); }
+
+  /* ---------- work (horizontal) ---------- */
+  .work { padding-block: clamp(80px, 12vh, 140px) 0; overflow: hidden; }
+  .work__pin { padding-bottom: clamp(60px, 10vh, 120px); }
+  .work__track { display: flex; gap: clamp(18px, 2.4vw, 36px); padding-inline: var(--gutter); width: max-content; will-change: transform; }
+  .piece { width: clamp(260px, 28vw, 400px); flex: none; display: grid; gap: 14px; }
+  .piece__art {
+    all: unset; cursor: pointer; display: block; position: relative; overflow: hidden;
+    border-radius: 4px; background: var(--paper); aspect-ratio: 4 / 5; max-width: 100%;
+  }
+  .piece__art:focus-visible { outline: 2px solid var(--violet); outline-offset: 4px; }
+  .piece__art img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 1.1s var(--ease); }
+  .piece__art:hover img { transform: scale(1.06) rotate(-.6deg); }
+  .piece__no {
+    position: absolute; top: 12px; left: 14px;
+    font: 500 11px/1 var(--mono); letter-spacing: .12em; color: var(--paper-ink); opacity: .7;
+  }
+  .piece__cap { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+  .piece__cap h3 { margin: 0; font: italic 400 26px/1.1 var(--display); }
+  .piece__specs { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    font: 500 10.5px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase;
+    padding: 6px 9px; border: 1px solid var(--line); border-radius: 999px; color: var(--dim);
+  }
+  .chip--healed { border-color: color-mix(in oklab, var(--violet) 50%, transparent); color: var(--violet); }
+
+  .work__end { width: clamp(240px, 24vw, 340px); flex: none; align-self: center; display: grid; gap: 18px; }
+  .work__end p { margin: 0; font: italic 400 30px/1.15 var(--display); }
+
+  @media (max-width: 767px) {
+    .work__track { overflow-x: auto; width: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; scrollbar-width: none; }
+    .work__track::-webkit-scrollbar { display: none; }
+    .piece, .work__end { scroll-snap-align: start; }
+    .piece { width: 78vw; max-width: 340px; }
+  }
+
+  /* ---------- styles list with hover preview ---------- */
+  .styles__list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .style-row {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr) auto; gap: 24px; align-items: center;
+    padding-block: clamp(22px, 3.2vw, 38px); border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  .style-row::before {
+    content: ""; position: absolute; inset: 0; z-index: -1; background: var(--ink-2);
+    transform: scaleY(0); transform-origin: 50% 100%; transition: transform .5s var(--ease);
+  }
+  .style-row:hover::before { transform: scaleY(1); }
+  .style-row h3 { margin: 0; font: 400 clamp(34px, 4.8vw, 72px)/1 var(--display); letter-spacing: -.02em; transition: transform .6s var(--ease), color .3s; }
+  .style-row:hover h3 { transform: translateX(14px); color: var(--violet); font-style: italic; }
+  .style-row p { margin: 0; color: var(--dim); max-width: 44ch; }
+  .style-row__thumb { display: none; width: 64px; aspect-ratio: 4/5; border-radius: 3px; object-fit: cover; }
+  @media (max-width: 760px) {
+    .style-row { grid-template-columns: 64px minmax(0, 1fr); }
+    .style-row__thumb { display: block; grid-row: span 3; align-self: start; }
+    .style-row .label { grid-column: 2; }
+  }
+  .preview {
+    position: fixed; left: 0; top: 0; z-index: 40; pointer-events: none;
+    width: 240px; aspect-ratio: 4/5; border-radius: 4px; overflow: hidden;
+    opacity: 0; transform: translate(-50%, -50%) scale(.7);
+    transition: opacity .35s var(--ease);
+  }
+  .preview.is-on { opacity: 1; }
+  .preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  @media (pointer: coarse), (max-width: 760px) { .preview { display: none; } }
+
+  /* ---------- process ---------- */
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .step { background: var(--ink); padding: 28px 24px 32px; display: grid; gap: 14px; align-content: start; min-height: 240px; }
+  .step__n { font: italic 400 56px/1 var(--display); color: var(--violet); }
+  .step h3 { margin: 0; font: 600 17px/1.3 var(--body); }
+  .step p { margin: 0; color: var(--dim); font-size: 15px; }
+
+  /* ---------- studio bento ---------- */
+  .bento { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; }
+  .tile { background: var(--ink-2); border: 1px solid var(--line); border-radius: 10px; padding: clamp(22px, 2.4vw, 32px); display: grid; gap: 16px; align-content: start; }
+  .tile h3 { margin: 0; font: italic 400 30px/1.1 var(--display); }
+  .tile p { margin: 0; color: var(--dim); }
+  .t-rate { grid-column: span 3; }
+  .t-needles { grid-column: span 3; }
+  .t-heal { grid-column: span 4; }
+  .t-where { grid-column: span 2; background: var(--violet); color: var(--ink); border-color: transparent; }
+  .t-where .label, .t-where p { color: color-mix(in oklab, var(--ink) 75%, var(--violet)); }
+  @media (max-width: 900px) { .bento { grid-template-columns: 1fr; } .bento > * { grid-column: auto; } }
+
+  .rates { display: grid; gap: 0; margin: 0; }
+  .rates div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-block: 12px; border-bottom: 1px dashed var(--line); }
+  .rates div:last-child { border-bottom: 0; }
+  .rates dt { color: var(--dim); }
+  .rates dd { margin: 0; font: 500 16px/1 var(--mono); font-variant-numeric: tabular-nums; }
+
+  .needles { display: flex; gap: 22px; flex-wrap: wrap; align-items: flex-end; }
+  .needle { display: grid; gap: 10px; justify-items: center; }
+  .needle svg { width: 58px; height: 58px; }
+  .needle circle { fill: var(--bone); }
+  .needle b { font: 500 13px/1 var(--mono); }
+  .needle span { font-size: 12px; color: var(--dim); }
+
+  .heal { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .heal li { display: grid; gap: 8px; padding-top: 14px; border-top: 2px solid var(--line); }
+  .heal li:first-child { border-top-color: var(--violet); }
+  .heal b { font: 500 12px/1.2 var(--mono); letter-spacing: .06em; color: var(--violet); }
+  .heal span { font-size: 14px; color: var(--dim); }
+  @media (max-width: 640px) { .heal { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+  /* ---------- booking ---------- */
+  .book__grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(28px, 4vw, 64px); align-items: start; }
+  @media (max-width: 900px) { .book__grid { grid-template-columns: 1fr; } }
+  form { display: grid; gap: 28px; }
+  fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 12px; }
+  legend { padding: 0; margin-bottom: 12px; }
+  .opts { display: flex; flex-wrap: wrap; gap: 8px; }
+  .opt input { position: absolute; opacity: 0; pointer-events: none; }
+  .opt span {
+    display: inline-block; padding: 10px 16px; border-radius: 999px; border: 1px solid var(--line);
+    font-size: 14px; cursor: pointer; transition: background .25s, color .25s, border-color .25s;
+  }
+  .opt:hover span { border-color: var(--dim); }
+  .opt input:checked + span { background: var(--bone); color: var(--ink); border-color: var(--bone); }
+  .opt input:focus-visible + span { outline: 2px solid var(--violet); outline-offset: 2px; }
+
+  .size-row { display: flex; align-items: center; gap: 18px; }
+  .size-row output { font: 500 15px/1 var(--mono); min-width: 7ch; text-align: right; font-variant-numeric: tabular-nums; }
+  input[type=range] { flex: 1; accent-color: var(--violet); height: 28px; min-width: 0; }
+
+  .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .fields .full { grid-column: 1 / -1; }
+  @media (max-width: 560px) { .fields { grid-template-columns: 1fr; } }
+  .field { display: grid; gap: 8px; }
+  .field input, .field textarea {
+    width: 100%; background: transparent; color: var(--bone); border: 0; border-bottom: 1px solid var(--line);
+    padding: 10px 0; font: 400 17px/1.4 var(--body); border-radius: 0;
+  }
+  .field textarea { resize: vertical; min-height: 88px; }
+  .field input:focus, .field textarea:focus { outline: none; border-bottom-color: var(--violet); }
+  .field input::placeholder, .field textarea::placeholder { color: #5f5a6a; }
+
+  .quote {
+    position: sticky; top: calc(env(safe-area-inset-top, 0px) + 90px);
+    background: var(--paper); color: var(--paper-ink); border-radius: 6px; padding: 28px;
+    display: grid; gap: 18px;
+  }
+  .quote .label { color: #6b6474; }
+  .quote__big { font: 400 clamp(44px, 5vw, 64px)/1 var(--display); letter-spacing: -.02em; font-variant-numeric: lining-nums tabular-nums; }
+  .quote__rows { display: grid; gap: 0; margin: 0; }
+  .quote__rows div { display: flex; justify-content: space-between; gap: 12px; padding-block: 10px; border-bottom: 1px dashed #c7bfb1; }
+  .quote__rows dt { color: #6b6474; }
+  .quote__rows dd { margin: 0; font: 500 14px/1.4 var(--mono); text-align: right; font-variant-numeric: tabular-nums; }
+  .quote__note { font-size: 13px; color: #6b6474; margin: 0; }
+  .form-msg { margin: 0; padding: 14px 16px; border-left: 2px solid var(--violet); background: var(--ink-2); font-size: 15px; }
+
+  /* ---------- footer ---------- */
+  .foot { padding-block: clamp(80px, 12vh, 140px) 40px; border-top: 1px solid var(--line); overflow: hidden; }
+  .foot__big { font: italic 400 clamp(72px, 17vw, 260px)/.85 var(--display); letter-spacing: -.03em; margin: 0 0 40px; color: transparent; -webkit-text-stroke: 1px var(--dim); white-space: nowrap; transition: color .8s var(--ease); }
+  .foot__big:hover { color: var(--bone); -webkit-text-stroke-color: transparent; }
+  .foot__row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px; align-items: center; }
+  .copy { display: inline-flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .copy code { font: 500 16px/1 var(--mono); user-select: all; }
+  .copy button { all: unset; cursor: pointer; font: 500 11px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px; }
+  .copy button:hover { border-color: var(--bone); }
+  .copy button:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+  .demo-note { color: var(--dim); font-size: 13px; }
+
+  /* ---------- lightbox ---------- */
+  dialog.lb {
+    border: 0; padding: 0; background: transparent; color: var(--bone);
+    max-width: min(1080px, calc(100vw - 32px)); width: 100%; max-height: calc(100dvh - 32px);
+  }
+  dialog.lb::backdrop { background: rgba(8, 7, 11, .88); backdrop-filter: blur(6px); }
+  .lb__inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); gap: 28px; align-items: center; background: var(--ink-2); border: 1px solid var(--line); border-radius: 8px; padding: 20px; }
+  .lb__img { width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: 4px; display: block; max-height: calc(100dvh - 80px); }
+  .lb__body { display: grid; gap: 16px; padding-right: 12px; }
+  .lb__body h3 { margin: 0; font: italic 400 clamp(36px, 4vw, 54px)/1 var(--display); }
+  .lb__body p { margin: 0; color: var(--dim); }
+  .lb__close { justify-self: start; }
+  @media (max-width: 700px) {
+    .lb__inner { grid-template-columns: 1fr; overflow-y: auto; max-height: calc(100dvh - 32px); }
+    .lb__img { max-height: 55dvh; }
+  }
+  ::view-transition-old(art), ::view-transition-new(art) { animation-duration: .55s; animation-timing-function: cubic-bezier(.19, 1, .22, 1); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .grain, .status::before { animation: none; }
+    .hero__name.is-drawing text { animation: none; }
+    *, *::before, *::after { transition-duration: .01ms !important; }
+  }
+</style>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+<div class="cursor" aria-hidden="true"><div class="cursor__ring"><span>View</span></div></div>
+<div class="preview" aria-hidden="true"><img alt=""></div>
+
+<header class="top" id="top">
+  <div class="wrap top__inner">
+    <a class="brand" href="#hero" data-scroll>Studio Lune<small>Tattoo</small></a>
+    <nav class="nav" aria-label="Main">
+      <a href="#work" data-scroll>Work</a>
+      <a href="#styles" data-scroll>Styles</a>
+      <a href="#studio" data-scroll>Studio</a>
+      <a class="nav__book status" href="#book" data-scroll>Books open</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="hero">
+    <canvas class="hero__gl" aria-hidden="true"></canvas>
+    <div class="wrap hero__inner">
+      <p class="label">Fine line · Dotwork · Ornamental blackwork</p>
+      <h1 class="hero__name">
+        <span class="sr-only">Vera Lune, tattoo artist</span>
+        <svg viewBox="0 0 1000 210" aria-hidden="true" focusable="false">
+          <text x="4" y="168" font-size="196" textLength="990" lengthAdjust="spacingAndGlyphs">Vera Lune</text>
+        </svg>
+      </h1>
+      <div class="hero__row">
+        <p class="hero__lede">Custom tattoos drawn once, for <em>one</em> person. Every piece is designed for the placement it lives on.</p>
+        <div class="hero__ctas">
+          <a class="btn magnetic" href="#book" data-scroll>Request a session
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+          <a class="btn btn--ghost magnetic" href="#work" data-scroll>See healed work</a>
+        </div>
+      </div>
+      <div class="hero__meta">
+        <span class="label">Private studio, by appointment</span>
+        <span class="label">Nov–Dec 2026 books open</span>
+        <span class="label">Est. 2017</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <div class="marquee__group">
+        <span class="marquee__item">Fine line</span><svg class="marquee__star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0c.6 6.6 5.4 11.4 12 12-6.6.6-11.4 5.4-12 12-.6-6.6-5.4-11.4-12-12C6.6 11.4 11.4 6.6 12 0z"/></svg>
+        <span class="marquee__item">Dotwork</span><svg class="marquee__star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0c.6 6.6 5.4 11.4 12 12-6.6.6-11.4 5.4-12 12-.6-6.6-5.4-11.4-12-12C6.6 11.4 11.4 6.6 12 0z"/></svg>
+        <span class="marquee__item">Ornamental</span><svg class="marquee__star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0c.6 6.6 5.4 11.4 12 12-6.6.6-11.4 5.4-12 12-.6-6.6-5.4-11.4-12-12C6.6 11.4 11.4 6.6 12 0z"/></svg>
+        <span class="marquee__item">Sacred geometry</span><svg class="marquee__star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0c.6 6.6 5.4 11.4 12 12-6.6.6-11.4 5.4-12 12-.6-6.6-5.4-11.4-12-12C6.6 11.4 11.4 6.6 12 0z"/></svg>
+        <span class="marquee__item">Celestial</span><svg class="marquee__star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0c.6 6.6 5.4 11.4 12 12-6.6.6-11.4 5.4-12 12-.6-6.6-5.4-11.4-12-12C6.6 11.4 11.4 6.6 12 0z"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <section class="section manifesto">
+    <div class="wrap">
+      <p class="label" style="margin-bottom:28px">The practice</p>
+      <p data-words>I don't sell flash off the wall. We talk, I draw, and the design is built around <em>your</em> skin, your muscle lines and how the piece will age in twenty years.</p>
+      <div class="manifesto__sign"><span></span><span class="label">Vera Lune, artist and owner</span></div>
+    </div>
+  </section>
+
+  <section class="work" id="work">
+    <div class="wrap sec-head">
+      <div>
+        <p class="label">Selected work · 2024–2026</p>
+        <h2 class="sec-title">Healed, <em>not</em> fresh.</h2>
+      </div>
+      <p class="label">Photographed 6+ weeks after the session</p>
+    </div>
+    <div class="work__pin">
+      <div class="work__track" id="track"></div>
+    </div>
+  </section>
+
+  <section class="section styles" id="styles">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="label">What I tattoo</p>
+          <h2 class="sec-title">Four styles, <em>done well.</em></h2>
+        </div>
+      </div>
+      <ul class="styles__list" id="styleList"></ul>
+    </div>
+  </section>
+
+  <section class="section process">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="label">From idea to healed</p>
+          <h2 class="sec-title">How a piece <em>happens</em></h2>
+        </div>
+        <p class="label">Typical lead time: 3–6 weeks</p>
+      </div>
+      <ol class="steps">
+        <li class="step"><span class="step__n">1</span><h3>Request</h3><p>Send your idea, placement and rough size. References help, but they're a starting point, not a copy.</p></li>
+        <li class="step"><span class="step__n">2</span><h3>Consult</h3><p>A 20-minute call or visit. We settle size and flow, and you pay a $100 deposit that comes off the final price.</p></li>
+        <li class="step"><span class="step__n">3</span><h3>Drawing</h3><p>I draw the piece in the week before your session. You see it on the day and we adjust it together.</p></li>
+        <li class="step"><span class="step__n">4</span><h3>Stencil &amp; session</h3><p>The stencil goes on, we check placement standing and moving, and then we tattoo.</p></li>
+        <li class="step"><span class="step__n">5</span><h3>Heal &amp; touch-up</h3><p>One free touch-up within 3 months. Send a healed photo so it can go in the book.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section studio" id="studio">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="label">The studio</p>
+          <h2 class="sec-title">Rates &amp; <em>aftercare</em></h2>
+        </div>
+      </div>
+      <div class="bento">
+        <article class="tile t-rate">
+          <p class="label">Rates</p>
+          <h3>Clear pricing</h3>
+          <dl class="rates">
+            <div><dt>Hourly</dt><dd>$180</dd></div>
+            <div><dt>Shop minimum</dt><dd>$150</dd></div>
+            <div><dt>Deposit (applied to final)</dt><dd>$100</dd></div>
+            <div><dt>Full day, up to 6 hrs</dt><dd>$950</dd></div>
+          </dl>
+        </article>
+        <article class="tile t-needles">
+          <p class="label">Needle groupings</p>
+          <h3>Small needles, clean lines</h3>
+          <div class="needles">
+            <div class="needle"><svg viewBox="0 0 58 58" aria-hidden="true"><circle cx="29" cy="29" r="3.2"/></svg><b>1RL</b><span>Fine detail</span></div>
+            <div class="needle"><svg viewBox="0 0 58 58" aria-hidden="true"><circle cx="22" cy="29" r="3.2"/><circle cx="29" cy="29" r="3.2"/><circle cx="36" cy="29" r="3.2"/></svg><b>3RL</b><span>Main linework</span></div>
+            <div class="needle"><svg viewBox="0 0 58 58" aria-hidden="true"><circle cx="15" cy="29" r="3.2"/><circle cx="22" cy="29" r="3.2"/><circle cx="29" cy="29" r="3.2"/><circle cx="36" cy="29" r="3.2"/><circle cx="43" cy="29" r="3.2"/></svg><b>5RL</b><span>Bold outlines</span></div>
+            <div class="needle"><svg viewBox="0 0 58 58" aria-hidden="true"><circle cx="11" cy="25" r="3.2"/><circle cx="23" cy="25" r="3.2"/><circle cx="35" cy="25" r="3.2"/><circle cx="47" cy="25" r="3.2"/><circle cx="17" cy="33" r="3.2"/><circle cx="29" cy="33" r="3.2"/><circle cx="41" cy="33" r="3.2"/></svg><b>7M</b><span>Stipple &amp; fill</span></div>
+          </div>
+        </article>
+        <article class="tile t-heal">
+          <p class="label">Aftercare</p>
+          <h3>What healing looks like</h3>
+          <ol class="heal">
+            <li><b>Days 1–3</b><span>Second-skin film stays on. Tender and a little red.</span></li>
+            <li><b>Days 4–14</b><span>Wash twice a day, thin layer of unscented lotion. It will peel. Don't pick.</span></li>
+            <li><b>Weeks 2–4</b><span>Looks cloudy while new skin settles. No sun, pools or baths.</span></li>
+            <li><b>Week 6+</b><span>Fully settled. SPF 50 on it for life keeps fine lines sharp.</span></li>
+          </ol>
+        </article>
+        <article class="tile t-where">
+          <p class="label">Where</p>
+          <h3>Private studio</h3>
+          <p>One chair, no walk-ins. The address is sent once your deposit is in.</p>
+          <p>Tue–Sat · 11:00–19:00</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section book" id="book">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="label">Book</p>
+          <h2 class="sec-title">Request a <em>session</em></h2>
+        </div>
+        <p class="label">Replies within 3 working days</p>
+      </div>
+      <div class="book__grid">
+        <form id="bookForm" novalidate>
+          <fieldset>
+            <legend class="label">Placement</legend>
+            <div class="opts" id="placement"></div>
+          </fieldset>
+          <fieldset>
+            <legend class="label">Style</legend>
+            <div class="opts" id="styleOpts"></div>
+          </fieldset>
+          <fieldset>
+            <legend class="label"><label for="size">Approximate size (longest side)</label></legend>
+            <div class="size-row">
+              <input type="range" id="size" name="size" min="3" max="30" step="1" value="12">
+              <output id="sizeOut" for="size">12 cm</output>
+            </div>
+          </fieldset>
+          <div class="fields">
+            <div class="field"><label class="label" for="fname">Name</label><input id="fname" name="name" autocomplete="name" placeholder="Your name" required></div>
+            <div class="field"><label class="label" for="femail">Email</label><input id="femail" name="email" type="email" autocomplete="email" placeholder="you@example.com" required></div>
+            <div class="field full"><label class="label" for="fidea">Your idea</label><textarea id="fidea" name="idea" placeholder="A crescent moon wrapped in fine-line botanicals, inner forearm, about the length of my hand."></textarea></div>
+          </div>
+          <div><button class="btn magnetic" type="submit">Send request
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </button></div>
+          <p class="form-msg" id="formMsg" role="status" hidden></p>
+        </form>
+
+        <aside class="quote" aria-live="polite">
+          <p class="label">Estimate</p>
+          <div class="quote__big" id="qPrice">$540–$720</div>
+          <dl class="quote__rows">
+            <div><dt>Time in chair</dt><dd id="qHours">3–4 hrs</dd></div>
+            <div><dt>Sessions</dt><dd id="qSessions">1</dd></div>
+            <div><dt>Deposit today</dt><dd>$100</dd></div>
+            <div><dt>Main needle</dt><dd id="qNeedle">3RL</dd></div>
+          </dl>
+          <p class="quote__note">A rough guide at $180/hr. The final quote comes after the consult.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="foot__big" aria-hidden="true">Vera Lune</p>
+    <div class="foot__row">
+      <div class="copy">
+        <code id="email">hello@studiolune.example</code>
+        <button type="button" id="copyBtn">Copy email</button>
+      </div>
+      <p class="demo-note">Demo site. Name, work, prices and contact details are placeholders.</p>
+    </div>
+  </div>
+</footer>
+
+<dialog class="lb" id="lb" aria-labelledby="lbTitle">
+  <div class="lb__inner">
+    <img class="lb__img" id="lbImg" alt="">
+    <div class="lb__body">
+      <p class="label" id="lbNo"></p>
+      <h3 id="lbTitle"></h3>
+      <p id="lbText"></p>
+      <div class="piece__specs" id="lbSpecs"></div>
+      <button class="btn btn--ghost lb__close" type="button" id="lbClose">Close</button>
+    </div>
+  </div>
+</dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = matchMedia('(pointer: fine)').matches;
+  if (reduce) document.documentElement.classList.add('no-motion');
+
+  /* ============ generative flash art ============ */
+  const PAPER = '#e7e0d3', INK = '#16131c', STENCIL = 'rgba(91,69,214,.55)';
+
+  function rng(seed) {
+    let s = seed % 2147483647; if (s <= 0) s += 2147483646;
+    return () => (s = s * 16807 % 2147483647, (s - 1) / 2147483646);
+  }
+  function canvas(w, h) {
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const x = c.getContext('2d');
+    x.fillStyle = PAPER; x.fillRect(0, 0, w, h);
+    // faint paper fibres
+    const r = rng(w * 7 + h);
+    x.globalAlpha = .05; x.fillStyle = INK;
+    for (let i = 0; i < 2600; i++) x.fillRect(r() * w, r() * h, 1, 1);
+    x.globalAlpha = 1; x.strokeStyle = INK; x.fillStyle = INK; x.lineCap = 'round'; x.lineJoin = 'round';
+    return [c, x];
+  }
+  const P = (cx, cy, r, a) => [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
+  function dot(x, px, py, r) { x.beginPath(); x.arc(px, py, r, 0, Math.PI * 2); x.fill(); }
+  function ring(x, cx, cy, r) { x.beginPath(); x.arc(cx, cy, r, 0, Math.PI * 2); x.stroke(); }
+  function stencilOffset(x, fn) { x.save(); x.translate(5, 4); x.strokeStyle = STENCIL; x.fillStyle = STENCIL; x.globalAlpha = .6; fn(); x.restore(); }
+
+  const art = {
+    mandala(w, h) {
+      const [c, x] = canvas(w, h), cx = w / 2, cy = h / 2, R = Math.min(w, h) * .42, r = rng(11);
+      const petals = (n, r1, r2, spread, lw) => {
+        x.lineWidth = lw;
+        for (let i = 0; i < n; i++) {
+          const a = i / n * Math.PI * 2, mid = (r1 + r2) / 2;
+          const [sx, sy] = P(cx, cy, r1, a), [ex, ey] = P(cx, cy, r2, a);
+          const [c1x, c1y] = P(cx, cy, mid, a - spread), [c2x, c2y] = P(cx, cy, mid, a + spread);
+          x.beginPath(); x.moveTo(sx, sy); x.quadraticCurveTo(c1x, c1y, ex, ey); x.quadraticCurveTo(c2x, c2y, sx, sy); x.stroke();
+        }
+      };
+      const draw = () => {
+        petals(12, R * .16, R * .46, .32, 2);
+        petals(12, R * .2, R * .38, .16, 1.2);
+        petals(24, R * .5, R * .78, .15, 1.6);
+        ring(x, cx, cy, R * .48); ring(x, cx, cy, R * .8);
+      };
+      stencilOffset(x, draw); draw();
+      for (let i = 0; i < 48; i++) { const [px, py] = P(cx, cy, R * .86, i / 48 * Math.PI * 2); dot(x, px, py, 4); }
+      for (let i = 0; i < 96; i++) { const [px, py] = P(cx, cy, R * .93, i / 96 * Math.PI * 2 + .03); dot(x, px, py, 2); }
+      for (let i = 0; i < 24; i++) { const [px, py] = P(cx, cy, R * 1.02, i / 24 * Math.PI * 2); dot(x, px, py, 1.6); const [qx, qy] = P(cx, cy, R * 1.07, i / 24 * Math.PI * 2); dot(x, qx, qy, 1); }
+      // stippled core, dense in the centre
+      for (let i = 0; i < 2600; i++) { const a = r() * Math.PI * 2, d = Math.pow(r(), 1.8) * R * .14; const [px, py] = P(cx, cy, d, a); dot(x, px, py, .9 + r() * .6); }
+      return c;
+    },
+    moons(w, h) {
+      const [c, x] = canvas(w, h), cx = w / 2, n = 5, gap = h / (n + 1), rad = Math.min(w * .15, gap * .36), r = rng(23);
+      x.lineWidth = 1.2; x.beginPath(); x.moveTo(cx, gap * .45); x.lineTo(cx, h - gap * .45); x.stroke();
+      [0.1, 0.3, 0.5, 0.7, 0.9].forEach((p, k) => {
+        const cy = gap * (k + 1);
+        x.fillStyle = PAPER; x.beginPath(); x.arc(cx, cy, rad, 0, Math.PI * 2); x.fill(); x.fillStyle = INK;
+        x.lineWidth = 1.6; ring(x, cx, cy, rad);
+        const term = Math.cos(p * Math.PI * 2); // -1..1 terminator position
+        for (let i = 0; i < 2600; i++) {
+          const a = r() * Math.PI * 2, d = Math.sqrt(r()) * rad, px = Math.cos(a) * d, py = Math.sin(a) * d;
+          const half = Math.sqrt(Math.max(0, rad * rad - py * py));
+          const shade = p < .5 ? px < term * half : px > -term * half;
+          if (shade && r() < .85) dot(x, cx + px, cy + py, .95);
+        }
+        stencilOffset(x, () => { x.lineWidth = 1; ring(x, cx, cy, rad + 10); });
+      });
+      for (let i = 0; i < 40; i++) { const sx = r() * w, sy = r() * h; if (Math.abs(sx - cx) > rad + 30) dot(x, sx, sy, r() * 1.6 + .5); }
+      return c;
+    },
+    seed(w, h) {
+      const [c, x] = canvas(w, h), cx = w / 2, cy = h / 2, s = Math.min(w, h) * .13;
+      const centres = [[0, 0]];
+      for (let i = 0; i < 6; i++) centres.push([Math.cos(i * Math.PI / 3) * s, Math.sin(i * Math.PI / 3) * s]);
+      for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3; centres.push([Math.cos(a) * s * 2, Math.sin(a) * s * 2]); centres.push([Math.cos(a + Math.PI / 6) * s * Math.sqrt(3), Math.sin(a + Math.PI / 6) * s * Math.sqrt(3)]); }
+      const draw = () => {
+        x.save(); x.beginPath(); x.arc(cx, cy, s * 3, 0, Math.PI * 2); x.clip();
+        x.lineWidth = 1.3; centres.forEach(([dx, dy]) => ring(x, cx + dx, cy + dy, s)); x.restore();
+        x.lineWidth = 2.2; ring(x, cx, cy, s * 3); x.lineWidth = 1; ring(x, cx, cy, s * 3.12);
+        x.lineWidth = 1.4;
+        [0, Math.PI].forEach(off => { x.beginPath(); for (let i = 0; i <= 3; i++) { const [px, py] = P(cx, cy, s * 3.12, off - Math.PI / 2 + i * Math.PI * 2 / 3); i ? x.lineTo(px, py) : x.moveTo(px, py); } x.stroke(); });
+      };
+      stencilOffset(x, draw); draw();
+      for (let i = 0; i < 6; i++) { const [px, py] = P(cx, cy, s * 3.5, i * Math.PI / 3 - Math.PI / 2); dot(x, px, py, 4); }
+      dot(x, cx, cy - s * 4.1, 2); dot(x, cx, cy + s * 4.1, 2);
+      return c;
+    },
+    tide(w, h) {
+      const [c, x] = canvas(w, h), ax = w * .14, aw = w * .72, top = h * .12, bot = h * .88;
+      const arch = () => { x.beginPath(); x.moveTo(ax, bot); x.lineTo(ax, top + aw / 2); x.arc(ax + aw / 2, top + aw / 2, aw / 2, Math.PI, 0); x.lineTo(ax + aw, bot); x.closePath(); };
+      x.save(); arch(); x.clip();
+      x.lineWidth = 1.3;
+      for (let i = 0; i < 44; i++) {
+        const y0 = top + aw * .55 + i * 11.5;
+        x.beginPath();
+        for (let px = ax - 10; px <= ax + aw + 10; px += 4) {
+          const y = y0 + Math.sin(px * .018 + i * .28) * (10 + i * .7) + Math.sin(px * .006 - i * .12) * 22;
+          px === ax - 10 ? x.moveTo(px, y) : x.lineTo(px, y);
+        }
+        x.stroke();
+      }
+      const sunR = aw * .16; x.lineWidth = 1.6; ring(x, ax + aw * .68, top + aw * .42, sunR);
+      x.restore();
+      x.lineWidth = 2.4; arch(); x.stroke();
+      stencilOffset(x, () => { x.lineWidth = 1; arch(); x.stroke(); });
+      return c;
+    },
+    sun(w, h) {
+      const [c, x] = canvas(w, h), cx = w / 2, cy = h / 2, R = Math.min(w, h) * .2, r = rng(47);
+      x.lineWidth = 1.4;
+      for (let i = 0; i < 48; i++) {
+        const a = i / 48 * Math.PI * 2, long = i % 2 === 0, len = long ? R * .95 : R * .5;
+        const [sx, sy] = P(cx, cy, R * 1.14, a), [ex, ey] = P(cx, cy, R * 1.14 + len, a);
+        x.beginPath(); x.moveTo(sx, sy); x.lineTo(ex, ey); x.stroke();
+        if (long) { const [dx, dy] = P(cx, cy, R * 1.14 + len + 12, a); dot(x, dx, dy, 2.6); }
+      }
+      x.lineWidth = 2; ring(x, cx, cy, R); ring(x, cx, cy, R * 1.06);
+      // stipple: shading denser toward the lower-right edge
+      for (let i = 0; i < 9000; i++) {
+        const a = r() * Math.PI * 2, d = Math.sqrt(r()) * R * .98, px = Math.cos(a) * d, py = Math.sin(a) * d;
+        const shade = Math.pow(d / R, 2.4) * (0.55 + 0.45 * ((px + py) / (R * 1.42)));
+        if (r() < shade) dot(x, cx + px, cy + py, .9);
+      }
+      stencilOffset(x, () => { x.lineWidth = 1; ring(x, cx, cy, R * 2.3); });
+      return c;
+    },
+    band(w, h) {
+      const [c, x] = canvas(w, h), cx = w / 2, bw = w * .26, rows = 6, rh = (h * .84) / rows, y0 = h * .08;
+      x.lineWidth = 2; x.beginPath(); x.moveTo(cx - bw, y0); x.lineTo(cx - bw, y0 + rh * rows); x.moveTo(cx + bw, y0); x.lineTo(cx + bw, y0 + rh * rows); x.stroke();
+      for (let k = 0; k < rows; k++) {
+        const top = y0 + k * rh, mid = top + rh / 2;
+        // solid diamond with a paper eye
+        x.beginPath(); x.moveTo(cx, top + 8); x.lineTo(cx + bw * .62, mid); x.lineTo(cx, top + rh - 8); x.lineTo(cx - bw * .62, mid); x.closePath(); x.fill();
+        x.fillStyle = PAPER; x.beginPath(); x.moveTo(cx, mid - rh * .2); x.lineTo(cx + bw * .22, mid); x.lineTo(cx, mid + rh * .2); x.lineTo(cx - bw * .22, mid); x.closePath(); x.fill(); x.fillStyle = INK;
+        dot(x, cx, mid, 3.2);
+        // blackwork triangles in the corners
+        [[-1, top], [1, top], [-1, top + rh], [1, top + rh]].forEach(([sgn, yy]) => {
+          const dir = yy === top ? 1 : -1;
+          x.beginPath(); x.moveTo(cx + sgn * bw, yy); x.lineTo(cx + sgn * bw * .42, yy); x.lineTo(cx + sgn * bw, yy + dir * rh * .34); x.closePath(); x.fill();
+        });
+        // scallops outside the band
+        x.lineWidth = 1.4;
+        [-1, 1].forEach(sgn => { x.beginPath(); x.arc(cx + sgn * bw, mid, rh * .32, sgn < 0 ? Math.PI / 2 : -Math.PI / 2, sgn < 0 ? Math.PI * 1.5 : Math.PI / 2); x.stroke(); dot(x, cx + sgn * (bw + rh * .46), mid, 2.4); });
+        x.lineWidth = 1; x.beginPath(); x.moveTo(cx - bw, top + rh); x.lineTo(cx + bw, top + rh); x.stroke();
+      }
+      stencilOffset(x, () => { x.lineWidth = 1; x.strokeRect(cx - bw - rh * .6, y0 - 14, (bw + rh * .6) * 2, rh * rows + 28); });
+      return c;
+    }
+  };
+
+  const pieces = [
+    { no: 'No. 031', title: 'Mandala Bloom', art: 'mandala', place: 'Forearm', size: '15 × 15 cm', hrs: '4 hrs', needle: '3RL + 7M', text: 'Twenty-four outer petals set on a stippled core, built on the round of the outer forearm so the circle reads true when the arm turns.' },
+    { no: 'No. 044', title: 'Five Moons', art: 'moons', place: 'Spine', size: '6 × 24 cm', hrs: '2.5 hrs', needle: '1RL + 5RL', text: 'Moon phases down the spine in single-needle outline and soft stipple shading. The centre line sits a few millimetres off the vertebrae.' },
+    { no: 'No. 052', title: 'Seed of Life', art: 'seed', place: 'Upper arm', size: '12 cm round', hrs: '3 hrs', needle: '3RL', text: 'Nineteen interlocking circles inside a double ring, with two triangles set to the angle of the deltoid.' },
+    { no: 'No. 058', title: 'Arch Tide', art: 'tide', place: 'Calf', size: '10 × 16 cm', hrs: '3.5 hrs', needle: '1RL', text: 'Forty-four parallel wave lines inside an arch window. Every line is spaced wide enough to hold as it spreads with age.' },
+    { no: 'No. 063', title: 'Stipple Sun', art: 'sun', place: 'Sternum', size: '14 cm round', hrs: '4 hrs', needle: '5RL + 7M', text: 'Alternating long and short rays around a sun shaded dot by dot, heaviest toward the lower edge.' },
+    { no: 'No. 071', title: 'Ornament Band', art: 'band', place: 'Forearm wrap', size: '7 × 20 cm', hrs: '5 hrs', needle: '5RL + 7M', text: 'Solid blackwork diamonds and corner triangles in a vertical band, finished with fine-line scallops either side.' }
+  ];
+
+  const styles = [
+    { name: 'Fine line', art: 'tide', text: 'Single and three-needle linework. Delicate, but spaced to last.', tag: '1RL · 3RL' },
+    { name: 'Dotwork', art: 'sun', text: 'Shading built one dot at a time, from soft gradients to dense stipple.', tag: '7M · 5RL' },
+    { name: 'Geometric', art: 'seed', text: 'Sacred geometry and mandalas, drafted to the curve of the body.', tag: '3RL' },
+    { name: 'Blackwork', art: 'band', text: 'Solid black ornament: bands, cuffs and panels that read from across a room.', tag: '5RL · 7M' }
+  ];
+
+  const imgs = {};
+  const cacheArt = key => imgs[key] || (imgs[key] = art[key](600, 750).toDataURL('image/png'));
+
+  const track = document.getElementById('track');
+  track.innerHTML = pieces.map((p, i) => `
+    <article class="piece">
+      <button class="piece__art" type="button" data-cursor="view" data-i="${i}" aria-label="View ${p.title}">
+        <img alt="${p.title}, ${p.place.toLowerCase()} tattoo design" src="${cacheArt(p.art)}" width="600" height="750">
+        <span class="piece__no">${p.no}</span>
+      </button>
+      <div class="piece__cap"><h3>${p.title}</h3><span class="label">${p.hrs}</span></div>
+      <div class="piece__specs"><span class="chip">${p.place}</span><span class="chip">${p.size}</span><span class="chip chip--healed">Healed</span></div>
+    </article>`).join('') + `
+    <div class="work__end"><p>Your idea could be No. 072.</p><a class="btn btn--ghost magnetic" href="#book" data-scroll>Start a request</a></div>`;
+
+  document.getElementById('styleList').innerHTML = styles.map(s => `
+    <li class="style-row" data-art="${s.art}">
+      <img class="style-row__thumb" src="${cacheArt(s.art)}" alt="">
+      <h3>${s.name}</h3><p>${s.text}</p><span class="label">${s.tag}</span>
+    </li>`).join('');
+
+  /* ============ lightbox with view transition ============ */
+  const lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg');
+  let lastImg = null;
+  const vt = fn => (document.startViewTransition && !reduce) ? document.startViewTransition(fn) : fn();
+  track.addEventListener('click', e => {
+    const btn = e.target.closest('.piece__art'); if (!btn) return;
+    const p = pieces[+btn.dataset.i], img = btn.querySelector('img');
+    lastImg = img; img.style.viewTransitionName = 'art';
+    vt(() => {
+      img.style.viewTransitionName = '';
+      lbImg.src = img.src; lbImg.alt = img.alt; lbImg.style.viewTransitionName = 'art';
+      document.getElementById('lbNo').textContent = `${p.no} · ${p.needle}`;
+      document.getElementById('lbTitle').textContent = p.title;
+      document.getElementById('lbText').textContent = p.text;
+      document.getElementById('lbSpecs').innerHTML = `<span class="chip">${p.place}</span><span class="chip">${p.size}</span><span class="chip">${p.hrs}</span><span class="chip chip--healed">Healed</span>`;
+      lb.showModal();
+    });
+  });
+  const closeLb = () => vt(() => {
+    lbImg.style.viewTransitionName = '';
+    if (lastImg) lastImg.style.viewTransitionName = 'art';
+    lb.close();
+  }).finished?.then(() => { if (lastImg) lastImg.style.viewTransitionName = ''; });
+  document.getElementById('lbClose').addEventListener('click', closeLb);
+  lb.addEventListener('cancel', e => { e.preventDefault(); closeLb(); });
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+
+  /* ============ hero ink shader ============ */
+  (function heroGL() {
+    const cv = document.querySelector('.hero__gl');
+    const gl = cv.getContext('webgl', { antialias: false, premultipliedAlpha: false });
+    if (!gl) return;
+    const vs = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+    const fs = `precision highp float;
+      uniform vec2 r; uniform float t; uniform vec2 m;
+      float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+      float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
+        return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}
+      float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*n(p);p=p*2.03+vec2(1.7,9.2);a*=.5;}return v;}
+      void main(){
+        vec2 uv=(gl_FragCoord.xy-.5*r)/r.y;
+        vec2 mm=(m-.5*r)/r.y; float d=length(uv-mm);
+        uv+=(uv-mm)*.22*exp(-d*3.5);
+        vec2 q=vec2(fbm(uv*1.3+t*.035),fbm(uv*1.3+vec2(5.2,1.3)-t*.03));
+        vec2 w=vec2(fbm(uv*1.6+2.2*q+vec2(1.7,9.2)+t*.02),fbm(uv*1.6+2.2*q+vec2(8.3,2.8)));
+        float f=fbm(uv*1.8+2.6*w);
+        vec3 ink=vec3(.051,.047,.063), vi=vec3(.36,.27,.84), bone=vec3(.93,.91,.87);
+        vec3 col=mix(ink,vi*.55,smoothstep(.45,.95,f));
+        col=mix(col,bone*.3,smoothstep(.62,1.,f*length(q)*1.25));
+        col+=vi*.18*exp(-d*4.);
+        col*=1.-.55*length((gl_FragCoord.xy/r)-vec2(.62,.45));
+        gl_FragColor=vec4(col,1.);
+      }`;
+    const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; };
+    const pr = gl.createProgram();
+    gl.attachShader(pr, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(pr);
+    if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) return;
+    gl.useProgram(pr);
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(pr, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    const uR = gl.getUniformLocation(pr, 'r'), uT = gl.getUniformLocation(pr, 't'), uM = gl.getUniformLocation(pr, 'm');
+    const scale = Math.min(devicePixelRatio || 1, 1.5) * .6;
+    let W = 0, H = 0, mx = 0, my = 0, tx = 0, ty = 0, visible = true;
+    const size = () => { W = cv.width = Math.max(1, cv.clientWidth * scale | 0); H = cv.height = Math.max(1, cv.clientHeight * scale | 0); gl.viewport(0, 0, W, H); tx = mx = W * .7; ty = my = H * .6; };
+    size(); addEventListener('resize', size);
+    cv.parentElement.addEventListener('pointermove', e => { const b = cv.getBoundingClientRect(); tx = (e.clientX - b.left) * scale; ty = (b.bottom - e.clientY) * scale; });
+    new IntersectionObserver(([en]) => { visible = en.isIntersecting; }).observe(cv);
+    const start = performance.now();
+    const frame = now => {
+      if (visible) {
+        mx += (tx - mx) * .05; my += (ty - my) * .05;
+        gl.uniform2f(uR, W, H); gl.uniform1f(uT, reduce ? 12 : (now - start) / 1000); gl.uniform2f(uM, mx, my);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+      }
+      if (!reduce) requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  })();
+
+  /* ============ needle-drawn name ============ */
+  const name = document.querySelector('.hero__name');
+  if (!reduce) {
+    const go = () => name.classList.add('is-drawing');
+    (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(go);
+    setTimeout(go, 1500);
+  }
+
+  /* ============ smooth scroll + scroll effects ============ */
+  const hasGsap = window.gsap && window.ScrollTrigger;
+  let lenis = null;
+  if (window.Lenis && !reduce) {
+    lenis = new Lenis({ lerp: .09, smoothWheel: true });
+    if (hasGsap) {
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(t => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0);
+    } else {
+      const raf = t => { lenis.raf(t); requestAnimationFrame(raf); }; requestAnimationFrame(raf);
+    }
+  }
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[data-scroll]'); if (!a) return;
+    const el = document.querySelector(a.getAttribute('href')); if (!el) return;
+    e.preventDefault();
+    lenis ? lenis.scrollTo(el, { offset: -10, duration: 1.4 }) : el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+  });
+
+  const top = document.getElementById('top');
+  const onScroll = () => top.classList.toggle('is-scrolled', scrollY > 40);
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // manifesto: words ink in as you scroll
+  const mp = document.querySelector('[data-words]');
+  const wrapWords = node => [...node.childNodes].forEach(ch => {
+    if (ch.nodeType === 3) {
+      const frag = document.createDocumentFragment();
+      ch.textContent.split(/(\s+)/).forEach(tok => {
+        if (!tok) return;
+        if (/^\s+$/.test(tok)) frag.append(tok);
+        else { const s = document.createElement('span'); s.className = 'w'; s.textContent = tok; frag.append(s); }
+      });
+      ch.replaceWith(frag);
+    } else if (ch.nodeType === 1) wrapWords(ch);
+  });
+  wrapWords(mp);
+  const words = mp.querySelectorAll('.w');
+  const litWords = () => {
+    const b = mp.getBoundingClientRect(), vh = innerHeight;
+    const p = Math.min(1, Math.max(0, (vh * .85 - b.top) / (b.height + vh * .35)));
+    const k = Math.round(p * words.length);
+    words.forEach((w, i) => w.classList.toggle('is-lit', i < k));
+  };
+  if (!reduce) { addEventListener('scroll', litWords, { passive: true }); litWords(); }
+
+  // marquee reacting to scroll velocity and direction
+  (function marquee() {
+    const t = document.querySelector('.marquee__track'), g = t.firstElementChild;
+    for (let i = 0; i < 3; i++) t.append(g.cloneNode(true));
+    if (reduce) return;
+    let x = 0, dir = 1, last = scrollY, vel = 0;
+    const tick = () => {
+      const dy = scrollY - last; last = scrollY;
+      if (dy) dir = dy > 0 ? 1 : -1;
+      vel += (Math.min(Math.abs(dy), 80) - vel) * .1;
+      x -= dir * (0.6 + vel * .25);
+      const wdt = g.offsetWidth;
+      if (x <= -wdt) x += wdt; if (x > 0) x -= wdt;
+      t.style.transform = `translate3d(${x}px,0,0) skewX(${-dir * Math.min(vel * .25, 10)}deg)`;
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  })();
+
+  // pinned horizontal gallery (desktop)
+  if (hasGsap && !reduce) {
+    gsap.registerPlugin(ScrollTrigger);
+    const mm = gsap.matchMedia();
+    mm.add('(min-width: 768px)', () => {
+      const dist = () => Math.max(0, track.scrollWidth - document.documentElement.clientWidth);
+      gsap.to(track, {
+        x: () => -dist(), ease: 'none',
+        scrollTrigger: { trigger: '.work__pin', start: 'center center', end: () => '+=' + dist(), pin: true, scrub: 1, invalidateOnRefresh: true, anticipatePin: 1 }
+      });
+      track.querySelectorAll('.piece__art img').forEach(img => {
+        gsap.fromTo(img, { xPercent: -6 }, { xPercent: 6, ease: 'none', scrollTrigger: { trigger: '.work__pin', start: 'center center', end: () => '+=' + dist(), scrub: true } });
+      });
+    });
+    // hero drifts away as you leave it
+    gsap.to('.hero__inner', { yPercent: 18, opacity: .35, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+    addEventListener('load', () => ScrollTrigger.refresh());
+    document.fonts && document.fonts.ready.then(() => ScrollTrigger.refresh());
+  }
+
+  /* ============ cursor, magnetic buttons, hover preview ============ */
+  if (fine) {
+    const cur = document.querySelector('.cursor');
+    let cx = innerWidth / 2, cy = innerHeight / 2, px = cx, py = cy;
+    addEventListener('pointermove', e => { cx = e.clientX; cy = e.clientY; });
+    const loop = () => { px += (cx - px) * .2; py += (cy - py) * .2; cur.style.transform = `translate3d(${px}px,${py}px,0)`; requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
+    document.addEventListener('pointerover', e => {
+      cur.classList.toggle('is-view', !!e.target.closest('[data-cursor=view]'));
+      cur.classList.toggle('is-link', !e.target.closest('[data-cursor=view]') && !!e.target.closest('a, button, label, .style-row'));
+    });
+
+    document.querySelectorAll('.magnetic').forEach(el => {
+      el.addEventListener('pointermove', e => {
+        const b = el.getBoundingClientRect();
+        el.style.transform = `translate(${(e.clientX - b.left - b.width / 2) * .25}px, ${(e.clientY - b.top - b.height / 2) * .35}px)`;
+      });
+      el.addEventListener('pointerleave', () => { el.style.transition = 'transform .6s cubic-bezier(.19,1,.22,1), color .4s'; el.style.transform = ''; setTimeout(() => el.style.transition = '', 600); });
+    });
+
+    const pv = document.querySelector('.preview'), pvImg = pv.querySelector('img');
+    let vx = 0, vy = 0, ox = 0, rot = 0, on = false;
+    document.querySelectorAll('.style-row').forEach(row => {
+      row.addEventListener('pointerenter', () => { pvImg.src = cacheArt(row.dataset.art); pv.classList.add('is-on'); on = true; });
+      row.addEventListener('pointerleave', () => { pv.classList.remove('is-on'); on = false; });
+    });
+    const pvLoop = () => {
+      const nx = vx + (cx - vx) * .12; rot += (((nx - ox) * .6) - rot) * .15; ox = nx; vx = nx; vy += (cy - vy) * .12;
+      pv.style.transform = `translate(${vx - 120}px, ${vy - 150}px) rotate(${Math.max(-14, Math.min(14, rot))}deg) scale(${on ? 1 : .7})`;
+      requestAnimationFrame(pvLoop);
+    };
+    requestAnimationFrame(pvLoop);
+  }
+
+  /* ============ booking estimator ============ */
+  const placements = [['Finger', .8], ['Wrist', .9], ['Forearm', 1], ['Upper arm', 1], ['Calf', 1.05], ['Spine', 1.2], ['Ribs', 1.3], ['Sternum', 1.25]];
+  const styleMult = [['Fine line', .85, '1RL'], ['Dotwork', 1.35, '7M'], ['Geometric', 1.1, '3RL'], ['Blackwork', 1.25, '5RL']];
+  document.getElementById('placement').innerHTML = placements.map(([n], i) =>
+    `<label class="opt"><input type="radio" name="placement" id="pl-${i}" value="${i}" ${n === 'Forearm' ? 'checked' : ''}><span>${n}</span></label>`).join('');
+  document.getElementById('styleOpts').innerHTML = styleMult.map(([n], i) =>
+    `<label class="opt"><input type="radio" name="style" id="st-${i}" value="${i}" ${i === 2 ? 'checked' : ''}><span>${n}</span></label>`).join('');
+
+  const form = document.getElementById('bookForm');
+  const fmt = n => '$' + n.toLocaleString('en-US');
+  const half = h => { const r = Math.round(h * 2) / 2; return (r % 1 ? r.toFixed(1) : r) ; };
+  const estimate = () => {
+    const size = +form.size.value;
+    const pl = placements[+form.placement.value], st = styleMult[+form.style.value];
+    document.getElementById('sizeOut').textContent = size + ' cm';
+    const hrs = Math.max(1, Math.pow(size, 1.35) / 8.5 * pl[1] * st[1]);
+    const lo = Math.max(1, hrs * .85), hi = hrs * 1.15;
+    const pLo = Math.max(150, Math.round(lo * 180 / 10) * 10), pHi = Math.max(150, Math.round(hi * 180 / 10) * 10);
+    document.getElementById('qPrice').textContent = pLo === pHi ? fmt(pLo) : `${fmt(pLo)}–${fmt(pHi)}`;
+    document.getElementById('qHours').textContent = half(lo) === half(hi) ? `${half(lo)} hrs` : `${half(lo)}–${half(hi)} hrs`;
+    document.getElementById('qSessions').textContent = hi > 6 ? `${Math.ceil(hi / 5)} (about 5 hrs each)` : '1';
+    document.getElementById('qNeedle').textContent = st[2];
+  };
+  form.addEventListener('input', estimate); estimate();
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const msg = document.getElementById('formMsg');
+    if (!form.name.value.trim() || !/\S+@\S+\.\S+/.test(form.email.value)) {
+      msg.textContent = 'Add your name and a valid email so the studio can reply.';
+    } else {
+      msg.textContent = `Thanks, ${form.name.value.trim().split(' ')[0]}. This is a demo, so your request stays on this page. On the live site it would go straight to the studio inbox.`;
+    }
+    msg.hidden = false;
+  });
+
+  /* ============ copy email ============ */
+  document.getElementById('copyBtn').addEventListener('click', async e => {
+    const text = document.getElementById('email').textContent, btn = e.currentTarget;
+    try { await navigator.clipboard.writeText(text); btn.textContent = 'Copied'; }
+    catch { const r = document.createRange(); r.selectNodeContents(document.getElementById('email')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Selected, press copy'; }
+    setTimeout(() => btn.textContent = 'Copy email', 2000);
+  });
+})();
+</script>
